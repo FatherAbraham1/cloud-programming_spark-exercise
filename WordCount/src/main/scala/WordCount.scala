@@ -17,10 +17,14 @@ object WordCount {
         val lines = sc.textFile(files)
         val counts = lines.flatMap (line => {
             val words = line.split("[^A-Za-z]+")
-            words.map(word => (word, 1))
+            words.filter(_.length() > 0)
+                 .map(s => (s.toLowerCase(), 1))
         }).reduceByKey(_ + _)
 
-        val result = counts.sortByKey() // Sort it
+        // sort
+        // 1. by count desc (trick: negate)
+        // 2. by word asc
+        val result = counts.sortBy(t => (- t._2, t._1))
 
         result.saveAsTextFile(outputPath) // Output
         sc.stop
