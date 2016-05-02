@@ -24,9 +24,9 @@ object SimpleApp {
         // Output
         println("lines of nouns with")
         println("-tion: " + num_tion.toString)
-        println("-sion: " + num_tion.toString)
+        println("-sion: " + num_sion.toString)
         println("-ism: " + num_ism.toString)
-        println("-ity: " + num_ism.toString)
+        println("-ity: " + num_ity.toString)
         println("-ness: " + num_ness.toString)
         println("-ship: " + num_ship.toString)
         sc.stop
