@@ -1,0 +1,12 @@
+#!/bin/sh
+
+BASEDIR=$(dirname "$0")
+
+rm -rf $BASEDIR/data
+mkdir -p $BASEDIR/data
+
+sbt package
+
+spark-submit --class WordCount --num-executors 30 $BASEDIR/target/scala-2.10/wordcount-application_2.10-1.0.jar
+
+hdfs dfs -getmerge Lab6/wordcount $BASEDIR/data/result.txt
