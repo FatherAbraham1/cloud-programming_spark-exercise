@@ -3,7 +3,7 @@ import org.apache.hadoop.fs._
 
 object ReachabilityQuery {
     def main(args: Array[String]) {
-        val filePath = "/shared/Lab6/reachability-in/friends" + args(0) + ".txt"
+        val filePath = args(0)
         val name = args(1).toUpperCase()
         val iters = args(2).toInt
 
@@ -27,8 +27,8 @@ object ReachabilityQuery {
         // ...
         val table = lines.flatMap(s => {
              val names = s.split(",").map(_.toUpperCase())
-             Array((names(0), List(names(1))), (names(1), List(names(0)))) 
-        }).reduceByKey((a, b) => (a ++ b).distinct).collectAsMap()
+             Array((names(0), names(1)), (names(1), names(0))) 
+        })
         
         
         // Step 2: make an RDD from 'name'
@@ -43,7 +43,7 @@ object ReachabilityQuery {
         // optional: resize numPartitions to (sc.defaultParallelism * 3) at the end of each iteration
         //
          for (_ <- 1 to iters ) {
-             res = (res ++ sc.parallelize(res.map(name => table(name)).reduce(_ ++ _).distinct)).distinct
+            res = (res ++ res.map (x => (x, x)).join(table).map(x => x._2._2)).distinct()
          }
         
         // Action branch! Add cache() to avoid re-computation
