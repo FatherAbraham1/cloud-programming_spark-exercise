@@ -30,7 +30,6 @@ object ReachabilityQuery {
              Array((names(0), names(1)), (names(1), names(0))) 
         })
         
-        
         // Step 2: make an RDD from 'name'
         // hint: use sc.parallelize()
         // optional: you can pass (sc.defaultParallelism * 3) as # of slices for better performance
@@ -42,7 +41,7 @@ object ReachabilityQuery {
         // hint: use join(), union() and distinct()
         // optional: resize numPartitions to (sc.defaultParallelism * 3) at the end of each iteration
         //
-         for (i <- 1 to iters) {
+         for (_ <- 1 to iters) {
            val tmp = res.map (x => (x, x))
                         .join(table)
                         .values
