@@ -1,0 +1,11 @@
+#!/bin/sh
+
+read -p "which graph [1, 2, 3]: " FILE_ID
+read -p "starts from: " ROOT_NAME
+read -p "#hops: " HOPS
+
+BASEDIR=$(dirname "$0")
+
+sbt package
+
+spark-submit --class ReachabilityQuery --num-executors 30 BASEDIR=$(dirname "$0")/target/scala-2.10/reachabilityapp_2.10-1.0.jar FILE_ID ROOT_NAME HOPS
