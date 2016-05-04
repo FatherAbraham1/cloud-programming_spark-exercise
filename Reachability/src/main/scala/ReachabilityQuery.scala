@@ -42,13 +42,12 @@ object ReachabilityQuery {
         // hint: use join(), union() and distinct()
         // optional: resize numPartitions to (sc.defaultParallelism * 3) at the end of each iteration
         //
-         for (_ <- 1 to iters ) {
+         for (i <- 1 to iters) {
            val tmp = res.map (x => (x, x))
                         .join(table)
                         .values
                         .map(x => x._2)
            res = res.union(tmp).distinct()
-           res = res.cache()
          }
         
         // Action branch! Add cache() to avoid re-computation
